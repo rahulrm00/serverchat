@@ -8,7 +8,8 @@ const io =new Server(server,{
     cors:{
         origin: "https://client-ivory-tau.vercel.app/",
         methods:["GET","POST"],
-    }
+    },
+    transports: ["websocket", "polling"], 
 });
 app.use(cors());
 io.on("connection",(socket)=>{
