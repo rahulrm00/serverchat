@@ -16,17 +16,19 @@ app.use(cors());
 io.on("connection",(socket)=>{
     console.log(socket.id);
 socket.on("send",({room,message})=>{
-    const  newmsg = message;
+    console.log(`Received message for room ${room}:`, message);
     if(!messageroom[room]){
         messageroom[room] = [];
     }
-    messageroom[room].push(newmsg);
-    io.to(room).emit("newmsg",newmsg);
+    messageroom[room].push( message);
+    console.log(messageroom[room]);
+    io.emit("newmsg", message);
 })
 socket.on("joinroom",(room)=>{
+    console.log(`${socket.id} joined room: ${room}`);
     socket.join(room);
     if(messageroom[room]){
-        socket.emit("allmsg",messageroom[room]);
+        io.emit("allmsg",messageroom[room]);
     }
 })
 socket.on("leaveroom",(room)=>{
